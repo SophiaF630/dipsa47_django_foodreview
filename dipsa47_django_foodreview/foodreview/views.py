@@ -1,16 +1,29 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from .models import Restaurant, Customer, Review
-from .serializers import RestaurantSerializer, CustomerSerializer, ReviewSerializer
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views import generic
 
-class RestaurantView(viewsets.ModelViewSet):
-    queryset = Restaurant.objects.all()
-    serializer_class = RestaurantSerializer
+from .models import Category, Restaurant, Review
 
-class CustomerView(viewsets.ModelViewSet):
-    queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
 
-class ReviewView(viewsets.ModelViewSet):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
+class RestaurantListView(generic.ListView):
+    template_name = 'foodreview/restaurant_list.html'
+    context_object_name = 'restaurant_list'
+    def get_queryset(self):
+        return Restaurant.objects.order_by('-name')
+
+class ReviewListView(generic.ListView):
+    template_name = 'foodreview/restaurant_detail.html'
+    context_object_name = 'latest_review_list'
+    def get_queryset(self):
+        """Return the last 9 posted questions."""
+        return Review.objects.order_by('-posted_date')[:9]
+
+class RestaurantDetailView(generic.DetailView):
+    model = Restaurant
+    template_name = 'foodreview/restaurant_detail.html'
+
+def home(request):
+    category_list = Category.objects.order_by('-category_name')
+    context = {'category_list':category_list}
+    return render(request, 'foodreview/home.html', context)

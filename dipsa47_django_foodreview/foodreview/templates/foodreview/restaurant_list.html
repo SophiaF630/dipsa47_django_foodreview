@@ -1,0 +1,22 @@
+{% extends 'foodreview/base.html' %}
+
+{% block content %}
+
+{% if restaurant_list %}
+{% for restaurant in restaurant_list %}
+<div class="card">
+    <img class="card-img-left">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'foodreview:restaurant_detail' restaurant.id %}">{{ restaurant.name }}</a></h5>
+        <p class="card-text">Address: {{restaurant.address}}</p>
+        <p class="card-text">Average Rating: {{restaurant.average_rating}}</p>
+        <p class="card-text">Total Reviews: {{restaurant.total_reviews}}</p>
+    </div>
+</div>
+{% endfor %}
+
+{% else %}
+<p>No restaurants are available.</p>
+{% endif %}
+
+{% endblock %}
