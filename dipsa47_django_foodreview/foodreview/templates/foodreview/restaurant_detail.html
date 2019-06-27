@@ -5,10 +5,10 @@
 <h1>{{ restaurant.name }}</h1>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<p>Address</p>
+<p>Address: {{ restaurant.address }}</p>
 <p>Reviews</p>
-<p>Average Rating:</p>
-<p>Total Reviews:</p>
+<p>Average Rating: {{ restaurant.average_rating }}</p>
+<p>Total Reviews: {{ restaurant.total_reviews }}</p>
 <button class="btn btn-primary">Write your review</button>
 {% if latest_review_list %}
 <div>

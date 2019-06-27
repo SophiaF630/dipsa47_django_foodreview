@@ -12,13 +12,13 @@ class Restaurant(models.Model):
     category = models.ForeignKey(Category, on_delete = models.CASCADE)
     address = models.CharField(max_length=50)
     
-    # def average_rating(self):
-    #     all_ratings = map(lambda x: x.rating, self.review_set.all())
-    #     return np.mean(all_ratings)
+    def average_rating(self):
+        all_ratings = map(lambda x: x.rating, self.review_set.all())
+        return np.mean(list(all_ratings))
 
-    # def total_reviews(self):
-    #     total_reviews = map(lambda x: x.comment, self.review_set.all())
-    #     return np.count(total_reviews)
+    def total_reviews(self):
+        total_reviews = map(lambda x: x.comment, self.review_set.all())
+        return len(list(total_reviews))
 
     def __str__(self):
         return self.name
@@ -38,11 +38,10 @@ class Review(models.Model):
         (4, '4'),
         (5, '5'),
     )
-    restaurant_name = models.ForeignKey(Restaurant, on_delete = models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete = models.CASCADE)
     rating = models.IntegerField(choices=RATING_CHOICES)
     comment = models.TextField()
-    posted_by = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
-    # posted_by = models.CharField(max_length=100)
+    customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
     comment_to_commentid = models.TextField()
     posted_date	= models.DateTimeField(auto_now_add=True) 
     likes = models.IntegerField()
